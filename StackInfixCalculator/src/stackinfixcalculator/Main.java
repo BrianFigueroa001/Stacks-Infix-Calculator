@@ -4,7 +4,7 @@ package stackinfixcalculator;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
         Scanner kb = new Scanner(System.in);
         String input; //The valid expression
         int answer; // Final result after evaluation

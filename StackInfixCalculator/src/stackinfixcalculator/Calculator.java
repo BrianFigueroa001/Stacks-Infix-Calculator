@@ -10,7 +10,7 @@ public class Calculator {
      * Example: ( ( 2 * 5 ) + ( 6 / 2 ) )
      * ----------------------------------------------------------------------------------------
      */
-    public int evaluate(String input) {
+    public int evaluate(String input) throws Exception {
         Stack stack = new Stack();
         int answer = 0; 
         StringTokenizer tokenizedExpression = new StringTokenizer(input, " ");
@@ -36,7 +36,7 @@ public class Calculator {
     /**
      * The compute() method evaluates an expression according to its operation
      */
-    private int compute(int x, int y, String operator) {
+    private int compute(int x, int y, String operator) throws Exception {
 
         int num;
         switch (operator) {
@@ -49,9 +49,11 @@ public class Calculator {
             case "*":
                 num = x * y;
                 break;
-            default:
+            case "/":
                 num = x / y;
                 break;
+            default:
+                throw new Exception("Illegal operator found.");
         }
         return num;
     }
