@@ -12,8 +12,8 @@ public class Main {
         System.out.print("Please enter a valid expression: ");
         input = kb.nextLine();
         
-        Calculator calculator = new Calculator(input);
-        answer = calculator.evaluate();
+        Calculator calculator = new Calculator();
+        answer = calculator.evaluate(input);
         
         System.out.println(answer);
     }
