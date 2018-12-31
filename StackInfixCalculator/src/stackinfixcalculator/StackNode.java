@@ -2,16 +2,16 @@
 package stackinfixcalculator;
 
 public class StackNode {
-    private String token;
+    private String data;
     private StackNode next;
     
-    public StackNode(String expression, StackNode top){
-        token = expression;
+    public StackNode(String data, StackNode top){
+        this.data = data;
         next = top;
     }
     
-    public String getToken(){
-        return token;
+    public String getData(){
+        return data;
     }
     
     public StackNode getNext(){
