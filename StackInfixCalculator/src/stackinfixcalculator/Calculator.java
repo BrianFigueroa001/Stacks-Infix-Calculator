@@ -39,9 +39,9 @@ public class Calculator {
             
             if (substring.equals(")"))
             {
-                int x = Integer.parseInt(stack.pop()); //Get an operand
-                String operator = stack.pop(); //Get the operator
                 int y = Integer.parseInt(stack.pop()); //Get an operand
+                String operator = stack.pop(); //Get the operator
+                int x = Integer.parseInt(stack.pop()); //Get an operand
                 stack.pop(); //Discard a "("
                 
                 result = compute(x, y, operator); //Compute inner expression.
