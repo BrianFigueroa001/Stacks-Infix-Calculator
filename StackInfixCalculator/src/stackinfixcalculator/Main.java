@@ -11,8 +11,7 @@ public class Main {
 //        System.out.print("Please enter a valid expression: ");
 //        input = kb.nextLine();
 //        
-//        Calculator calculator = new Calculator();
-//        answer = calculator.evaluate(input);
+
         
         System.out.print("Please enter a valid expression: ");
         input = kb.nextLine();
@@ -21,5 +20,9 @@ public class Main {
         String converted = converter.convertToPostfix();
         
         System.out.println(converted);
+        
+        Calculator calculator = new Calculator();
+        answer = calculator.evaluate(converted);
+        System.out.println(answer);
     }
 }
