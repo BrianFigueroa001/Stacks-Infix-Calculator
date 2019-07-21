@@ -66,10 +66,9 @@ public class Calculator {
                 return x - y;
             case "*":
                 return x * y;
-            case "/":
-                    return x / y;
             default:
-                return -999;
+                    return x / y;
+
         }
     }
     

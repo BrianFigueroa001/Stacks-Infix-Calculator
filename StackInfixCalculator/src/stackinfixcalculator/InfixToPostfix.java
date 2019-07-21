@@ -3,7 +3,14 @@ package stackinfixcalculator;
 
 /**
  * This class converts an arithmetic expression from in-fix notation to
- * postfix notation.
+ * postfix notation. Note that this class does not handle all types of invalid expressions. It
+ * will return an error message if it detects an invalid character, and it doesn't take into account
+ * a mismatching number of parenthesis or misplaced operators and spacing.
+ *
+ * Correct examples: 23 * 2, (23 * 2) - 1, 23 * (2 - 1)
+ *
+ * Incorrect examples: 23*2, (23* 2) -1, 23(*(2-1))
+ *
  */
 public class InfixToPostfix {
     private CharStack stack;
@@ -20,17 +27,11 @@ public class InfixToPostfix {
     
 
     /**
-     * Converts the arithmetic expression from infix notation to postfix
-     * notation.
+     * Converts the arithmetic expression from infix notation to postfix notation.
      * @return The expression converted into postfix notation.
      */
     public String convertToPostfix()
     {
-        /*
-        NOTE: It's assumed for now that the infix expression is valid.
-        Code to validate infix expressions will come later.
-        */
-        
         //Used to store paranthesis and operators
         stack = new CharStack();
         //Will store expression in postfix notation.
@@ -46,13 +47,13 @@ public class InfixToPostfix {
             {
                 continue;
             }
-            
-            //Handle a digit character
+
+            //Handle numerical characters
             if (isOperand(exprChar))
             {
                 postExpr += exprChar;
                 
-                //Append subsequent digits (23, 536, etc)
+                //Append subsequent digits that belong to a number greater than 9. Ex: 10, 23, 583, etc.
                 while (i + 1 < inExpr.length() &&
                        Character.isDigit(inExpr.charAt(i + 1)))
                 {
@@ -60,7 +61,7 @@ public class InfixToPostfix {
                     postExpr += exprChar;
                 }
                 
-                //Append a space once the end of the number is reached.
+                //Append a space after the operand
                 postExpr += " ";
             }
             //Handles a parenthesis
