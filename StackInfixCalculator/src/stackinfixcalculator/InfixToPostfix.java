@@ -1,13 +1,12 @@
 package stackinfixcalculator;
 
-import java.util.Stack;
 
 /**
  * This class converts an arithmetic expression from in-fix notation to
  * postfix notation.
  */
 public class InfixToPostfix {
-    private Stack<Character> stack;
+    private CharStack stack;
     private String inExpr; //The expression in infix notation.
     
     /**
@@ -33,7 +32,7 @@ public class InfixToPostfix {
         */
         
         //Used to store paranthesis and operators
-        stack = new Stack<>();
+        stack = new CharStack();
         //Will store expression in postfix notation.
         String postExpr = ""; 
         
@@ -43,39 +42,70 @@ public class InfixToPostfix {
             //Scan for a character in the string.
             char exprChar = inExpr.charAt(i);
             
-            //Ignore spaces and continue to the next character.
             if (exprChar == ' ')
             {
                 continue;
             }
             
-            //Handle a non-operator character
-            if (!isOperator(exprChar))
+            //Handle a digit character
+            if (isOperand(exprChar))
             {
-                postExpr = handleNonOperator(postExpr, exprChar);
+                postExpr += exprChar;
+                
+                //Append subsequent digits (23, 536, etc)
+                while (i + 1 < inExpr.length() &&
+                       Character.isDigit(inExpr.charAt(i + 1)))
+                {
+                    exprChar = inExpr.charAt(++i);
+                    postExpr += exprChar;
+                }
+                
+                //Append a space once the end of the number is reached.
+                postExpr += " ";
+            }
+            //Handles a parenthesis
+            else if (isParanthesis(exprChar))
+            {
+                postExpr = Parenthesis(postExpr, exprChar);
             }
             //Handle an operator character.
-            else 
+            else if (isOperator(exprChar))
             {
                 postExpr = handleOperator(postExpr, exprChar);
+            }
+            //Invalid character detected. Return an error message.
+            else 
+            {
+                return "Invalid expression.";
             }
         }
         
         //Pop the rest of the characters in the stack and append them to string.
         while (!stack.isEmpty())
         {
-            postExpr += stack.pop();
+            postExpr += stack.pop() + " ";
         }
 
         return postExpr;
     }
-    
+
     //Check if the character is an operator.
-    private boolean isOperator(char charExpr)
+    private boolean isOperand(char charExpr) 
     {
-        return charExpr == '+' || charExpr == '-' || charExpr == '*' || 
-                charExpr == '+'; 
+        return Character.isDigit(charExpr);
     }
+
+    private boolean isParanthesis(char charExpr) 
+    {
+        return charExpr == '(' || charExpr == ')';
+    }
+
+    private boolean isOperator(char charExpr) 
+    {
+        return charExpr == '+' || charExpr == '-' || charExpr == '*'
+                || charExpr == '/';
+    }
+    
     private int precedence(char charExpr)
     {
         /*
@@ -96,18 +126,13 @@ public class InfixToPostfix {
     }
     
     //Utility method to process non-operator characters
-    private String handleNonOperator(String postExpr, char exprChar) 
+    private String Parenthesis(String postExpr, char exprChar) 
     {
         //Store the updated postfix expression here.
         String updatedPostExpr = postExpr;
-        
-        //Append digits to the string immediately.
-        if (Character.isDigit(exprChar)) {
-            updatedPostExpr += exprChar;
-        }
 
         //Push all left paranthesis into the stack
-        else if (exprChar == '(') {
+        if (exprChar == '(') {
             stack.push(exprChar);
         }
         //exprChar == ')'. Pop all elements from the stack until a '(' is found
@@ -116,7 +141,7 @@ public class InfixToPostfix {
             //Append everything from the stack before a '(' is found.
             while (!stack.isEmpty() && stack.peek() != '(') 
             {
-                updatedPostExpr += stack.pop();
+                updatedPostExpr += stack.pop() + " ";
             }
 
             //Discard the '('
@@ -156,7 +181,7 @@ public class InfixToPostfix {
             while (!stack.isEmpty() && stack.peek() != '('
                     && precedence(exprChar) <= precedence(stack.peek())) 
             {
-                updatedPostExpr += stack.pop();
+                updatedPostExpr += stack.pop() + " ";
             }
 
             //Push this character into the stack.
