@@ -13,28 +13,17 @@ package stackinfixcalculator;
  *
  */
 public class InfixToPostfix {
-    private CharStack stack;
-    private String inExpr; //The expression in infix notation.
-    
-    /**
-     * Constructs an Infix to Postfix convert.
-     * @param infixExpr The arithmetic expression that's going to be converted.
-     */
-    public InfixToPostfix(String infixExpr)
-    {
-        this.inExpr = infixExpr;
-    }
-    
 
     /**
      * Converts the arithmetic expression from infix notation to postfix notation.
+     * @param inExpr The expression in infix notation.
      * @return The expression converted into postfix notation.
      */
-    public String convertToPostfix()
+    public String convertToPostfix(String inExpr)
     {
         //Used to store paranthesis and operators
-        stack = new CharStack();
-        //Will store expression in postfix notation.
+        CharStack stack = new CharStack();
+        //Will store expression in b b mmhjpostfix notation.
         String postExpr = ""; 
         
         //Scan the entire infix expression from left to right.
@@ -49,7 +38,7 @@ public class InfixToPostfix {
             }
 
             //Handle numerical characters
-            if (isOperand(exprChar))
+            if (Character.isDigit(exprChar))
             {
                 postExpr += exprChar;
                 
@@ -65,14 +54,15 @@ public class InfixToPostfix {
                 postExpr += " ";
             }
             //Handles a parenthesis
-            else if (isParanthesis(exprChar))
+            else if (exprChar == '(' || exprChar == ')')
             {
-                postExpr = Parenthesis(postExpr, exprChar);
+                postExpr = parenthesis(postExpr, exprChar, stack);
             }
             //Handle an operator character.
-            else if (isOperator(exprChar))
+            else if (exprChar == '+' || exprChar == '-' || exprChar == '*'
+                    || exprChar == '/')
             {
-                postExpr = handleOperator(postExpr, exprChar);
+                postExpr = handleOperator(postExpr, exprChar, stack);
             }
             //Invalid character detected. Return an error message.
             else 
@@ -90,23 +80,6 @@ public class InfixToPostfix {
         return postExpr;
     }
 
-    //Check if the character is an operator.
-    private boolean isOperand(char charExpr) 
-    {
-        return Character.isDigit(charExpr);
-    }
-
-    private boolean isParanthesis(char charExpr) 
-    {
-        return charExpr == '(' || charExpr == ')';
-    }
-
-    private boolean isOperator(char charExpr) 
-    {
-        return charExpr == '+' || charExpr == '-' || charExpr == '*'
-                || charExpr == '/';
-    }
-    
     private int precedence(char charExpr)
     {
         /*
@@ -127,7 +100,7 @@ public class InfixToPostfix {
     }
     
     //Utility method to process non-operator characters
-    private String Parenthesis(String postExpr, char exprChar) 
+    private String parenthesis(String postExpr, char exprChar, CharStack stack)
     {
         //Store the updated postfix expression here.
         String updatedPostExpr = postExpr;
@@ -152,7 +125,7 @@ public class InfixToPostfix {
         return updatedPostExpr;
     }
     
-    private String handleOperator(String postExpr, char exprChar) 
+    private String handleOperator(String postExpr, char exprChar, CharStack stack)
     {
         String updatedPostExpr = postExpr;
         

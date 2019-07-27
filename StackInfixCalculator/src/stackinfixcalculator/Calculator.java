@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 /*
 ToDo: Add code to check if the user's input is valid
-      Add code that reads expressions containing non-single digited operands.
+
 */
 
 /**
@@ -31,8 +31,8 @@ public class Calculator {
             String substring = tokenizer.nextToken();
             
             int result;
-            
-            if (!isOperator(substring))
+
+            if (!substring.equals("+") && !substring.equals("-") && !substring.equals("*") && !substring.equals("/"))
             {
                 stack.push(substring);
             }
@@ -43,8 +43,9 @@ public class Calculator {
                 //First operand
                 int x = Integer.parseInt(stack.pop());
                 
-                //Perform operation and push the result into the stack.
+                //Perform operation and get the integer
                 result = compute(substring, x, y);
+                //Convert
                 
                 //Convert the result into a string to push into the stack.
                 substring = Integer.toString(result);
@@ -55,7 +56,8 @@ public class Calculator {
         //Only the result should be in the stack after the expression is read.
         return Integer.parseInt(stack.pop());
     }
-    
+
+
     private int compute(String operator, int x, int y)
     {
         switch (operator)
@@ -70,12 +72,6 @@ public class Calculator {
                     return x / y;
 
         }
-    }
-    
-    private boolean isOperator(String substring) 
-    {
-        return substring.equals("+") || substring.equals("-") || 
-               substring.equals("*") || substring.equals("/");
     }
 
 }
