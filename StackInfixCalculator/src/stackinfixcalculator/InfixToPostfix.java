@@ -3,28 +3,25 @@ package stackinfixcalculator;
 
 /**
  * This class converts an arithmetic expression from in-fix notation to
- * postfix notation. Note that this class does not handle all types of invalid expressions. It
- * will return an error message if it detects an invalid character, and it doesn't take into account
- * a mismatching number of parenthesis or misplaced operators and spacing.
+ * postfix notation. Note that valid expressions are required, and invalid expressions will result in errors. It
+ * will return an error message if it detects an invalid character. Mismatching
  *
  * Correct examples: 23 * 2, (23 * 2) - 1, 23 * (2 - 1)
- *
- * Incorrect examples: 23*2, (23* 2) -1, 23(*(2-1))
- *
  */
 public class InfixToPostfix {
 
     /**
      * Converts the arithmetic expression from infix notation to postfix notation.
      * @param inExpr The expression in infix notation.
-     * @return The expression converted into postfix notation.
+     * @return The expression converted into postfix notation, or 'Invalid Expression' if it's invalid.
      */
     public String convertToPostfix(String inExpr)
     {
         //Used to store paranthesis and operators
         CharStack stack = new CharStack();
-        //Will store expression in b b mmhjpostfix notation.
-        String postExpr = ""; 
+        //Will store expression in postfix notation.
+        String postExpr = "";
+        //Checks to see if the number of operands is 1 greater than the number of operators
         
         //Scan the entire infix expression from left to right.
         for (int i = 0; i < inExpr.length(); ++i)
@@ -67,7 +64,7 @@ public class InfixToPostfix {
             //Invalid character detected. Return an error message.
             else 
             {
-                return "Invalid expression.";
+                return "Invalid Expression";
             }
         }
         
@@ -119,7 +116,14 @@ public class InfixToPostfix {
             }
 
             //Discard the '('
-            stack.pop();
+            try
+            {
+                stack.pop();
+            }
+            catch (NullPointerException e)
+            {
+                return "Invalid Expression";
+            }
         }
         
         return updatedPostExpr;

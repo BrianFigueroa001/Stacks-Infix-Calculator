@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
         Scanner kb = new Scanner(System.in);
         String input = ""; //User input
-        int answer; //Stores result after evaluation expression
+        String answer; //Stores result after evaluation expression
         
 //        System.out.print("Please enter a valid expression: ");
 //        input = kb.nextLine();
@@ -16,8 +16,8 @@ public class Main {
         
         while (!input.equals("exit"))
         {
-            InfixToPostfix converter = new InfixToPostfix(input);
-            String converted = converter.convertToPostfix();
+            InfixToPostfix converter = new InfixToPostfix();
+            String converted = converter.convertToPostfix(input);
 
             System.out.println(converted);
 
